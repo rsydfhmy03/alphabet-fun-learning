@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Fun Learning - Belajar Alphabet Menyenangkan</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .card-alphabet {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card-alphabet:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .letter-display {
+            font-family: 'Fredoka', cursive;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .emoji-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .shape:nth-child(3) { bottom: 10%; left: 20%; animation-delay: 4s; }
+        .shape:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .hero-text {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-400 via-purple-500 to-purple-600">
+    
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape w-20 h-20 bg-yellow-300 rounded-full"></div>
+        <div class="shape w-16 h-16 bg-pink-300 rounded-full"></div>
+        <div class="shape w-24 h-24 bg-green-300 rounded-full"></div>
+        <div class="shape w-18 h-18 bg-orange-300 rounded-full"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar-glass sticky top-0 z-50 px-4 py-3 mb-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <span class="text-2xl">🎓</span>
+                <span class="text-xl font-bold text-white font-fredoka">ABC Fun Learning</span>
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Score Display -->
+                <div class="flex items-center space-x-2 bg-white/20 px-3 py-1 rounded-full">
+                    <span class="text-yellow-300">⭐</span>
+                    <span class="text-white font-semibold">Score: <span id="score">0</span></span>
+                </div>
+                
+                <!-- Sound Toggle -->
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <span class="text-white text-sm">🔊</span>
+                    <input type="checkbox" id="soundToggle" class="sr-only" checked>
+                    <div class="relative">
+                        <div class="w-10 h-6 bg-green-500 rounded-full shadow-inner"></div>
+                        <div class="absolute w-4 h-4 bg-white rounded-full shadow left-1 top-1 transition-transform duration-300 ease-in-out transform translate-x-4"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="text-center mb-8">
+        <h1 class="text-5xl md:text-6xl font-bold text-white hero-text mb-4 font-fredoka">
+            🌟 Selamat Datang di ABC Fun Learning! 🌟
+        </h1>
+        <p class="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
+            Belajar alphabet dengan cara yang menyenangkan dan interaktif. 
+            Klik huruf untuk mulai belajar!
+        </p>
+        
+        <!-- Progress Tracker -->
+        <div class="progress-container rounded-full p-1 max-w-md mx-auto mb-6">
+            <div class="bg-white rounded-full p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-semibold text-gray-600">Progress Belajar</span>
+                    <span class="text-sm font-semibold text-gray-600" id="progressText">0/26</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="progress-bar h-3 rounded-full" style="width: 0%" id="progress"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap justify-center gap-4 mb-8">
+            <a th:href="@{/quiz}" class="btn-primary text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition-all">
+                🎯 Mulai Quiz
+            </a>
+            <a th:href="@{/stats}" class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-all">
+                📊 Lihat Statistik
+            </a>
+            <button onclick="startRandomLetter()" class="bg-gradient-to-r from-orange-400 to-pink-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition-all">
+                🎲 Huruf Acak
+            </button>
+        </div>
+    </section>
+
+    <!-- Alphabet Grid -->
+    <section class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+            <div th:each="alphabet : ${alphabets}" 
+                 th:class="${alphabet.colorClass} + ' card-alphabet rounded-xl p-4 text-center cursor-pointer border-2 hover:border-white/50'"
+                 th:data-letter="${alphabet.letter}"
+                 onclick="goToLetterFromCard(this)">
+                
+                <div class="letter-display text-4xl font-bold mb-2" th:text="${alphabet.letter}"></div>
+                <div class="text-3xl mb-2 emoji-bounce" th:text="${alphabet.emoji}"></div>
+                <div class="font-semibold text-gray-700 text-sm" th:text="${alphabet.word}"></div>
+                <div class="text-xs text-gray-500 mt-1" th:text="${alphabet.category}"></div>
+                
+                <!-- Sound Button -->
+                <button class="mt-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full hover:bg-blue-600 transition-colors"
+                        th:data-letter="${alphabet.letter}"
+                        th:data-word="${alphabet.word}"
+                        onclick="playLetterSoundFromButton(this)">
+                    🔊 Dengar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fun Facts Section -->
+    <section class="mt-12 mb-8">
+        <div class="container mx-auto px-4">
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
+                <h2 class="text-3xl font-bold text-white mb-4 font-fredoka">🎉 Fakta Menarik!</h2>
+                <div class="grid md:grid-cols-3 gap-6 text-white">
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <div class="text-3xl mb-2">📚</div>
+                        <h3 class="font-semibold mb-2">Total Huruf</h3>
+                        <p class="text-2xl font-bold" th:text="${totalLetters}">26</p>
+                        <p class="text-sm opacity-80">huruf dalam alphabet</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <h3 class="font-semibold mb-2">Target Harian</h3>
+                        <p class="text-2xl font-bold">5</p>
+                        <p class="text-sm opacity-80">huruf per hari</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <div class="text-3xl mb-2">⭐</div>
+                        <h3 class="font-semibold mb-2">Poin Kamu</h3>
+                        <p class="text-2xl font-bold" id="totalScore">0</p>
+                        <p class="text-sm opacity-80">poin terkumpul</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black/20 backdrop-blur-sm text-white text-center py-6 mt-8">
+        <div class="container mx-auto">
+            <p class="mb-2">🌟 Dibuat dengan ❤️ untuk anak-anak Indonesia</p>
+            <p class="text-sm opacity-75">© 2024 ABC Fun Learning - Belajar Alphabet Menyenangkan</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a th:href="@{/about}" class="hover:text-yellow-300 transition-colors">Tentang</a>
+                <a th:href="@{/print}" class="hover:text-yellow-300 transition-colors">Cetak</a>
+                <button onclick="resetProgress()" class="hover:text-red-300 transition-colors">Reset Progress</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/alphabet-app.js}"></script>
+    
+    <script>
+        // Additional functions for homepage
+        function goToLetter(letter) {
+            // Play click sound
+            if (window.alphabetApp && window.alphabetApp.soundEnabled) {
+                window.alphabetApp.speak(`Huruf ${letter}`);
+            }
+            
+            // Navigate to letter page
+            setTimeout(() => {
+                window.location.href = `/alphabet/${letter}`;
+            }, 200);
+        }
+        
+        // New function to handle card clicks using data attributes
+        function goToLetterFromCard(cardElement) {
+            const letter = cardElement.getAttribute('data-letter');
+            if (letter) {
+                goToLetter(letter);
+            }
+        }
+        
+        function startRandomLetter() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+            goToLetter(randomLetter);
+        }
+        
+        function playLetterSound(letter, word) {
+            if (window.alphabetApp) {
+                window.alphabetApp.speak(`Huruf ${letter}. ${word}`);
+            }
+        }
+        
+        // New function to handle sound button clicks using data attributes
+        function playLetterSoundFromButton(buttonElement) {
+            const letter = buttonElement.getAttribute('data-letter');
+            const word = buttonElement.getAttribute('data-word');
+            if (letter && word) {
+                playLetterSound(letter, word);
+            }
+        }
+        
+        function resetProgress() {
+            if (window.alphabetApp) {
+                window.alphabetApp.resetProgress();
+            }
+        }
+        
+        // Sound Toggle Animation
+        document.getElementById('soundToggle').addEventListener('change', function() {
+            const slider = this.nextElementSibling.lastElementChild;
+            if (this.checked) {
+                slider.style.transform = 'translateX(16px)';
+                slider.parentElement.style.backgroundColor = '#10b981';
+            } else {
+                slider.style.transform = 'translateX(0)';
+                slider.parentElement.style.backgroundColor = '#6b7280';
+            }
+        });
+        
+        // Initialize progress on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.alphabetApp) {
+                window.alphabetApp.updateProgress();
+                document.getElementById('totalScore').textContent = window.alphabetApp.score;
+            }
+        });
+        
+        // Add hover effects for cards
+        document.querySelectorAll('.card-alphabet').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title != null ? title + ' - ABC Fun Learning' : 'ABC Fun Learning - Belajar Alphabet Menyenangkan'}">ABC Fun Learning</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .card-alphabet {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card-alphabet:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .letter-display {
+            font-family: 'Fredoka', cursive;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .emoji-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary-color), #f97316);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+        
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .shape:nth-child(3) { bottom: 10%; left: 20%; animation-delay: 4s; }
+        .shape:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .correct-answer {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white !important;
+            animation: correctPulse 0.6s ease;
+        }
+        
+        .wrong-answer {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: white !important;
+            animation: shake 0.6s ease;
+        }
+        
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .card-alphabet {
+                margin: 0.5rem;
+            }
+            
+            .letter-display {
+                font-size: 4rem;
+            }
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'comic': ['Comic Neue', 'cursive'],
+                        'fredoka': ['Fredoka', 'cursive']
+                    },
+                    colors: {
+                        'primary': '#6366f1',
+                        'secondary': '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-400 via-purple-500 to-purple-600">
+    
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape w-20 h-20 bg-yellow-300 rounded-full"></div>
+        <div class="shape w-16 h-16 bg-pink-300 rounded-full"></div>
+        <div class="shape w-24 h-24 bg-green-300 rounded-full"></div>
+        <div class="shape w-18 h-18 bg-orange-300 rounded-full"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar-glass sticky top-0 z-50 px-4 py-3 mb-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <a th:href="@{/}" class="flex items-center space-x-2">
+                <span class="text-2xl">🎓</span>
+                <span class="text-xl font-bold text-white font-fredoka">ABC Fun Learning</span>
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Score Display -->
+                <div class="flex items-center space-x-2 bg-white/20 px-3 py-1 rounded-full">
+                    <span class="text-yellow-300">⭐</span>
+                    <span class="text-white font-semibold">Score: <span id="score">0</span></span>
+                </div>
+                
+                <!-- Sound Toggle -->
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <span class="text-white text-sm">🔊</span>
+                    <input type="checkbox" id="soundToggle" class="sr-only">
+                    <div class="relative">
+                        <div class="w-10 h-6 bg-gray-300 rounded-full shadow-inner"></div>
+                        <div class="absolute w-4 h-4 bg-white rounded-full shadow left-1 top-1 transition-transform duration-300 ease-in-out"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pb-8">
+        <div th:replace="${content}">
+            <!-- Content will be inserted here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black/20 backdrop-blur-sm text-white text-center py-6 mt-8">
+        <div class="container mx-auto">
+            <p class="mb-2">🌟 Dibuat dengan ❤️ untuk anak-anak Indonesia</p>
+            <p class="text-sm opacity-75">© 2024 ABC Fun Learning - Belajar Alphabet Menyenangkan</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/alphabet-app.js}"></script>
+    
+    <!-- Sound Toggle Animation -->
+    <script>
+        document.getElementById('soundToggle').addEventListener('change', function() {
+            const slider = this.nextElementSibling.lastElementChild;
+            if (this.checked) {
+                slider.style.transform = 'translateX(16px)';
+                slider.parentElement.style.backgroundColor = '#10b981';
+            } else {
+                slider.style.transform = 'translateX(0)';
+                slider.parentElement.style.backgroundColor = '#6b7280';
+            }
+        });
+    </script>
+</body>
+</html>
