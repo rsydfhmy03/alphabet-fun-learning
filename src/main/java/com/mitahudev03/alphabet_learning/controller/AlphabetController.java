@@ -31,8 +31,12 @@ public class AlphabetController {
             model.addAttribute("allAlphabets", alphabetService.getAllAlphabets());
             model.addAttribute("nextLetter", alphabetService.getNextLetter(letter));
             model.addAttribute("prevLetter", alphabetService.getPrevLetter(letter));
+            model.addAttribute("quizOptions", alphabetService.generateQuizOptions(letter));
             return "alphabet-detail";
+            
         }
+
+       
         return "redirect:/";
     }
     
