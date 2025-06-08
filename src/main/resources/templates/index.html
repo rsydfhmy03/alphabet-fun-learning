@@ -7,242 +7,403 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'gradient': 'gradient 3s ease infinite',
+                    },
+                    colors: {
+                        'glass': 'rgba(255,255,255,0.1)',
+                        'glass-border': 'rgba(255,255,255,0.2)',
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Comic+Neue:wght@300;400;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(-10px) rotate(240deg); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6), 0 0 80px rgba(99, 102, 241, 0.2); }
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-3deg); }
+            75% { transform: rotate(3deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         body {
-            font-family: 'Comic Neue', cursive;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             min-height: 100vh;
         }
         
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
         .card-alphabet {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-alphabet::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            transition: all 0.6s;
+        }
+        
+        .card-alphabet:hover::before {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
         }
         
         .card-alphabet:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-15px) scale(1.05) rotate(2deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255,255,255,0.5);
+            border-color: rgba(255, 255, 255, 0.6);
         }
         
         .letter-display {
             font-family: 'Fredoka', cursive;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .emoji-bounce {
-            animation: bounce 2s infinite;
+            animation: bounce-slow 3s infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
         
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+        .hero-title {
+            background: linear-gradient(135deg, #ffffff, #f8fafc, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-family: 'Fredoka', cursive;
         }
         
-        .navbar-glass {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        .btn-magical {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 200%;
+            animation: gradient 3s ease infinite;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-        }
-        
-        .floating-shapes {
-            position: fixed;
+        .btn-magical::before {
+            content: '';
+            position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: all 0.5s;
+        }
+        
+        .btn-magical:hover::before {
+            left: 100%;
+        }
+        
+        .btn-magical:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+        }
+        
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             pointer-events: none;
             z-index: -1;
         }
         
-        .shape {
+        .floating-shape {
             position: absolute;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
         }
         
-        .shape:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .shape:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
-        .shape:nth-child(3) { bottom: 10%; left: 20%; animation-delay: 4s; }
-        .shape:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1s; }
+        .floating-shape:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-shape:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-shape:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 4s; }
+        .floating-shape:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 1s; }
+        .floating-shape:nth-child(5) { top: 50%; left: 5%; animation-delay: 3s; }
+        .floating-shape:nth-child(6) { top: 70%; right: 25%; animation-delay: 5s; }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+        .progress-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
         }
         
-        .hero-text {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        .card-hover-effect:hover {
+            animation: wiggle 0.5s ease-in-out;
         }
         
-        .progress-container {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+        .navbar-float {
+            animation: fade-in-up 1s ease-out;
         }
         
-        .progress-bar {
-            background: linear-gradient(90deg, #10b981, #059669);
-            transition: width 0.5s ease;
+        .stats-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .loading-animation {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .card-alphabet:hover {
+                transform: translateY(-8px) scale(1.02);
+            }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-400 via-purple-500 to-purple-600">
+<body>
     
-    <!-- Floating Background Shapes -->
-    <div class="floating-shapes">
-        <div class="shape w-20 h-20 bg-yellow-300 rounded-full"></div>
-        <div class="shape w-16 h-16 bg-pink-300 rounded-full"></div>
-        <div class="shape w-24 h-24 bg-green-300 rounded-full"></div>
-        <div class="shape w-18 h-18 bg-orange-300 rounded-full"></div>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-shape w-24 h-24 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full"></div>
+        <div class="floating-shape w-20 h-20 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full"></div>
+        <div class="floating-shape w-28 h-28 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"></div>
+        <div class="floating-shape w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+        <div class="floating-shape w-32 h-32 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full"></div>
+        <div class="floating-shape w-22 h-22 bg-gradient-to-r from-red-400 to-pink-500 rounded-full"></div>
     </div>
 
     <!-- Navigation -->
-    <nav class="navbar-glass sticky top-0 z-50 px-4 py-3 mb-6">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-2">
-                <span class="text-2xl">🎓</span>
-                <span class="text-xl font-bold text-white font-fredoka">ABC Fun Learning</span>
-            </a>
-            
-            <div class="flex items-center space-x-4">
-                <!-- Score Display -->
-                <div class="flex items-center space-x-2 bg-white/20 px-3 py-1 rounded-full">
-                    <span class="text-yellow-300">⭐</span>
-                    <span class="text-white font-semibold">Score: <span id="score">0</span></span>
-                </div>
+    <nav class="glass-morphism fixed top-0 w-full z-50 navbar-float">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="flex items-center space-x-3 group">
+                    <div class="text-3xl group-hover:animate-bounce">🎓</div>
+                    <span class="text-2xl font-bold text-white drop-shadow-lg">ABC Fun Learning</span>
+                </a>
                 
-                <!-- Sound Toggle -->
-                <label class="flex items-center space-x-2 cursor-pointer">
-                    <span class="text-white text-sm">🔊</span>
-                    <input type="checkbox" id="soundToggle" class="sr-only" checked>
-                    <div class="relative">
-                        <div class="w-10 h-6 bg-green-500 rounded-full shadow-inner"></div>
-                        <div class="absolute w-4 h-4 bg-white rounded-full shadow left-1 top-1 transition-transform duration-300 ease-in-out transform translate-x-4"></div>
+                <div class="flex items-center space-x-6">
+                    <!-- Enhanced Score Display -->
+                    <div class="flex items-center space-x-3 glass-morphism px-4 py-2 rounded-full">
+                        <div class="text-yellow-300 text-xl animate-pulse">⭐</div>
+                        <span class="text-white font-semibold">Score: <span id="score" class="text-yellow-300">0</span></span>
                     </div>
-                </label>
+                    
+                    <!-- Enhanced Sound Toggle -->
+                    <label class="flex items-center space-x-3 cursor-pointer group">
+                        <span class="text-white text-lg group-hover:scale-110 transition-transform">🔊</span>
+                        <div class="relative">
+                            <input type="checkbox" id="soundToggle" class="sr-only" checked>
+                            <div class="w-12 h-6 bg-white/30 rounded-full shadow-inner transition-all duration-300"></div>
+                            <div class="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 transition-transform duration-300 ease-in-out transform translate-x-5"></div>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="text-center mb-8">
-        <h1 class="text-5xl md:text-6xl font-bold text-white hero-text mb-4 font-fredoka">
-            🌟 Selamat Datang di ABC Fun Learning! 🌟
-        </h1>
-        <p class="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-            Belajar alphabet dengan cara yang menyenangkan dan interaktif. 
-            Klik huruf untuk mulai belajar!
-        </p>
-        
-        <!-- Progress Tracker -->
-        <div class="progress-container rounded-full p-1 max-w-md mx-auto mb-6">
-            <div class="bg-white rounded-full p-4">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-semibold text-gray-600">Progress Belajar</span>
-                    <span class="text-sm font-semibold text-gray-600" id="progressText">0/26</span>
+    <section class="pt-24 pb-12 text-center animate-fade-in-up">
+        <div class="container mx-auto px-6">
+            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-6 leading-tight">
+                🌟 ABC Fun Learning! 🌟
+            </h1>
+            <p class="text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+                Belajar alphabet dengan cara yang <span class="font-bold text-yellow-300">super menyenangkan</span> dan interaktif! 
+                Mari mulai petualangan belajar yang tak terlupakan! ✨
+            </p>
+            
+            <!-- Enhanced Progress Tracker -->
+            <div class="glass-morphism rounded-2xl p-6 max-w-lg mx-auto mb-8 animate-scale-in">
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-white font-semibold flex items-center">
+                            <i class="fas fa-chart-line mr-2 text-green-400"></i>
+                            Progress Belajar
+                        </span>
+                        <span class="text-white font-bold text-lg" id="progressText">0/26</span>
+                    </div>
+                    <div class="w-full bg-white/20 rounded-full h-4 overflow-hidden">
+                        <div class="progress-glow bg-gradient-to-r from-green-400 to-emerald-500 h-4 rounded-full transition-all duration-1000 ease-out" 
+                             style="width: 0%" id="progress"></div>
+                    </div>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div class="progress-bar h-3 rounded-full" style="width: 0%" id="progress"></div>
+                <div class="text-sm text-white/80 flex items-center justify-center">
+                    <i class="fas fa-trophy mr-2 text-yellow-400"></i>
+                    Kamu bisa melakukannya! 💪
                 </div>
             </div>
-        </div>
-        
-        <!-- Action Buttons -->
-        <div class="flex flex-wrap justify-center gap-4 mb-8">
-            <a th:href="@{/quiz}" class="btn-primary text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition-all">
-                🎯 Mulai Quiz
-            </a>
-            <a th:href="@{/stats}" class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-all">
-                📊 Lihat Statistik
-            </a>
-            <button onclick="startRandomLetter()" class="bg-gradient-to-r from-orange-400 to-pink-500 text-white px-6 py-3 rounded-full font-semibold hover:scale-105 transition-all">
-                🎲 Huruf Acak
-            </button>
-        </div>
-    </section>
-
-    <!-- Alphabet Grid -->
-    <section class="container mx-auto px-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-            <div th:each="alphabet : ${alphabets}" 
-                 th:class="${alphabet.colorClass} + ' card-alphabet rounded-xl p-4 text-center cursor-pointer border-2 hover:border-white/50'"
-                 th:data-letter="${alphabet.letter}"
-                 onclick="goToLetterFromCard(this)">
-                
-                <div class="letter-display text-4xl font-bold mb-2" th:text="${alphabet.letter}"></div>
-                <div class="text-3xl mb-2 emoji-bounce" th:text="${alphabet.emoji}"></div>
-                <div class="font-semibold text-gray-700 text-sm" th:text="${alphabet.word}"></div>
-                <div class="text-xs text-gray-500 mt-1" th:text="${alphabet.category}"></div>
-                
-                <!-- Sound Button -->
-                <button class="mt-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full hover:bg-blue-600 transition-colors"
-                        th:data-letter="${alphabet.letter}"
-                        th:data-word="${alphabet.word}"
-                        onclick="playLetterSoundFromButton(this)">
-                    🔊 Dengar
+            
+            <!-- Enhanced Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
+                <a th:href="@{/quiz}" class="btn-magical text-white px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-2xl">
+                    🎯 Mulai Quiz Seru
+                </a>
+                <a th:href="@{/stats}" class="glass-morphism text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all duration-300 shadow-xl">
+                    📊 Lihat Prestasi
+                </a>
+                <button onclick="startRandomLetter()" class="bg-gradient-to-r from-orange-400 via-pink-500 to-red-500 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-2xl btn-magical">
+                    🎲 Huruf Surprise
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Fun Facts Section -->
-    <section class="mt-12 mb-8">
-        <div class="container mx-auto px-4">
-            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
-                <h2 class="text-3xl font-bold text-white mb-4 font-fredoka">🎉 Fakta Menarik!</h2>
-                <div class="grid md:grid-cols-3 gap-6 text-white">
-                    <div class="bg-white/10 rounded-xl p-4">
-                        <div class="text-3xl mb-2">📚</div>
-                        <h3 class="font-semibold mb-2">Total Huruf</h3>
-                        <p class="text-2xl font-bold" th:text="${totalLetters}">26</p>
-                        <p class="text-sm opacity-80">huruf dalam alphabet</p>
+    <!-- Enhanced Alphabet Grid -->
+    <section class="container mx-auto px-6 pb-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+            <div th:each="alphabet, iterStat : ${alphabets}" 
+                 th:class="${alphabet.colorClass} + ' card-alphabet rounded-2xl p-6 text-center cursor-pointer border-2 hover:border-white/60 card-hover-effect animate-scale-in'"
+                 th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's'"
+                 th:data-letter="${alphabet.letter}"
+                 onclick="goToLetterFromCard(this)">
+                
+                <div class="letter-display text-5xl font-bold mb-3" th:text="${alphabet.letter}"></div>
+                <div class="text-4xl mb-3 emoji-bounce" th:text="${alphabet.emoji}"></div>
+                <div class="font-bold text-gray-700 text-sm mb-1" th:text="${alphabet.word}"></div>
+                <div class="text-xs text-gray-500 mb-3" th:text="${alphabet.category}"></div>
+                
+                <!-- Enhanced Sound Button -->
+                <button class="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs px-3 py-2 rounded-full hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                        th:data-letter="${alphabet.letter}"
+                        th:data-word="${alphabet.word}"
+                        onclick="playLetterSoundFromButton(this)">
+                    <i class="fas fa-volume-up mr-1"></i>Dengar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Fun Facts Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="glass-morphism rounded-3xl p-8 text-center">
+                <h2 class="text-4xl font-bold text-white mb-8 flex items-center justify-center">
+                    <span class="mr-4 text-5xl animate-bounce">🎉</span>
+                    Fakta Menarik!
+                    <span class="ml-4 text-5xl animate-bounce" style="animation-delay: 0.5s">🎊</span>
+                </h2>
+                <div class="grid md:grid-cols-3 gap-8 text-white">
+                    <div class="stats-card rounded-2xl p-6">
+                        <div class="text-5xl mb-4 animate-pulse">📚</div>
+                        <h3 class="font-bold text-xl mb-3">Total Huruf</h3>
+                        <p class="text-4xl font-bold text-yellow-300 mb-2" th:text="${totalLetters}">26</p>
+                        <p class="text-sm opacity-80">huruf menanti untuk dipelajari!</p>
                     </div>
-                    <div class="bg-white/10 rounded-xl p-4">
-                        <div class="text-3xl mb-2">🎯</div>
-                        <h3 class="font-semibold mb-2">Target Harian</h3>
-                        <p class="text-2xl font-bold">5</p>
-                        <p class="text-sm opacity-80">huruf per hari</p>
+                    <div class="stats-card rounded-2xl p-6">
+                        <div class="text-5xl mb-4 animate-pulse" style="animation-delay: 0.5s">🎯</div>
+                        <h3 class="font-bold text-xl mb-3">Target Harian</h3>
+                        <p class="text-4xl font-bold text-green-400 mb-2">5</p>
+                        <p class="text-sm opacity-80">huruf per hari, kamu pasti bisa!</p>
                     </div>
-                    <div class="bg-white/10 rounded-xl p-4">
-                        <div class="text-3xl mb-2">⭐</div>
-                        <h3 class="font-semibold mb-2">Poin Kamu</h3>
-                        <p class="text-2xl font-bold" id="totalScore">0</p>
-                        <p class="text-sm opacity-80">poin terkumpul</p>
+                    <div class="stats-card rounded-2xl p-6">
+                        <div class="text-5xl mb-4 animate-pulse" style="animation-delay: 1s">⭐</div>
+                        <h3 class="font-bold text-xl mb-3">Poin Kamu</h3>
+                        <p class="text-4xl font-bold text-purple-400 mb-2" id="totalScore">0</p>
+                        <p class="text-sm opacity-80">poin keren terkumpul!</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-black/20 backdrop-blur-sm text-white text-center py-6 mt-8">
-        <div class="container mx-auto">
-            <p class="mb-2">🌟 Dibuat dengan ❤️ untuk anak-anak Indonesia</p>
-            <p class="text-sm opacity-75">© 2024 ABC Fun Learning - Belajar Alphabet Menyenangkan</p>
-            <div class="mt-4 flex justify-center space-x-4">
-                <a th:href="@{/about}" class="hover:text-yellow-300 transition-colors">Tentang</a>
-                <a th:href="@{/print}" class="hover:text-yellow-300 transition-colors">Cetak</a>
-                <button onclick="resetProgress()" class="hover:text-red-300 transition-colors">Reset Progress</button>
+    <!-- Enhanced Footer -->
+    <footer class="glass-morphism text-white text-center py-8 mt-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col items-center space-y-4">
+                <p class="text-lg font-semibold">🌟 Dibuat dengan <span class="text-red-400 text-xl animate-pulse">❤️</span> untuk anak-anak Indonesia</p>
+                <p class="text-sm opacity-90">© 2024 ABC Fun Learning - Belajar Alphabet Menyenangkan</p>
+                <div class="flex flex-wrap justify-center space-x-6 mt-4">
+                    <a th:href="@{/about}" class="hover:text-yellow-300 transition-colors duration-300 hover:scale-110 transform">
+                        <i class="fas fa-info-circle mr-2"></i>Tentang
+                    </a>
+                    <a th:href="@{/print}" class="hover:text-blue-300 transition-colors duration-300 hover:scale-110 transform">
+                        <i class="fas fa-print mr-2"></i>Cetak
+                    </a>
+                    <button onclick="resetProgress()" class="hover:text-red-300 transition-colors duration-300 hover:scale-110 transform">
+                        <i class="fas fa-redo mr-2"></i>Reset Progress
+                    </button>
+                </div>
             </div>
         </div>
     </footer>
@@ -251,84 +412,176 @@
     <script th:src="@{/js/alphabet-app.js}"></script>
     
     <script>
-        // Additional functions for homepage
+        // Enhanced functions for homepage
         function goToLetter(letter) {
-            // Play click sound
+            // Play enhanced click sound
             if (window.alphabetApp && window.alphabetApp.soundEnabled) {
-                window.alphabetApp.speak(`Huruf ${letter}`);
+                window.alphabetApp.speak(`Mari belajar huruf ${letter}!`);
             }
             
-            // Navigate to letter page
+            // Add loading animation
+            const letterCard = document.querySelector(`[data-letter="${letter}"]`);
+            if (letterCard) {
+                letterCard.classList.add('loading-animation');
+            }
+            
+            // Navigate to letter page with delay for animation
             setTimeout(() => {
                 window.location.href = `/alphabet/${letter}`;
-            }, 200);
+            }, 500);
         }
         
-        // New function to handle card clicks using data attributes
         function goToLetterFromCard(cardElement) {
             const letter = cardElement.getAttribute('data-letter');
             if (letter) {
-                goToLetter(letter);
+                // Add click animation
+                cardElement.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    cardElement.style.transform = '';
+                    goToLetter(letter);
+                }, 150);
             }
         }
         
         function startRandomLetter() {
             const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+            
+            // Add excitement sound
+            if (window.alphabetApp && window.alphabetApp.soundEnabled) {
+                window.alphabetApp.speak(`Surprise! Mari belajar huruf ${randomLetter}!`);
+            }
+            
             goToLetter(randomLetter);
         }
         
         function playLetterSound(letter, word) {
             if (window.alphabetApp) {
-                window.alphabetApp.speak(`Huruf ${letter}. ${word}`);
+                window.alphabetApp.speak(`Huruf ${letter} untuk ${word}`);
             }
         }
         
-        // New function to handle sound button clicks using data attributes
         function playLetterSoundFromButton(buttonElement) {
             const letter = buttonElement.getAttribute('data-letter');
             const word = buttonElement.getAttribute('data-word');
             if (letter && word) {
+                // Add button animation
+                buttonElement.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    buttonElement.style.transform = '';
+                }, 150);
+                
                 playLetterSound(letter, word);
             }
         }
         
         function resetProgress() {
-            if (window.alphabetApp) {
-                window.alphabetApp.resetProgress();
+            if (confirm('Apakah kamu yakin ingin reset progress? Semua kemajuan akan hilang!')) {
+                if (window.alphabetApp) {
+                    window.alphabetApp.resetProgress();
+                    // Add reset animation
+                    document.getElementById('progress').style.width = '0%';
+                    document.getElementById('progressText').textContent = '0/26';
+                    document.getElementById('totalScore').textContent = '0';
+                }
             }
         }
         
-        // Sound Toggle Animation
+        // Enhanced Sound Toggle Animation
         document.getElementById('soundToggle').addEventListener('change', function() {
             const slider = this.nextElementSibling.lastElementChild;
+            const track = this.nextElementSibling;
+            
             if (this.checked) {
-                slider.style.transform = 'translateX(16px)';
-                slider.parentElement.style.backgroundColor = '#10b981';
+                slider.style.transform = 'translateX(24px)';
+                track.style.background = 'linear-gradient(135deg, #10b981, #059669)';
             } else {
                 slider.style.transform = 'translateX(0)';
-                slider.parentElement.style.backgroundColor = '#6b7280';
+                track.style.background = 'rgba(255,255,255,0.3)';
             }
         });
         
-        // Initialize progress on page load
+        // Initialize enhanced progress on page load
         document.addEventListener('DOMContentLoaded', function() {
             if (window.alphabetApp) {
                 window.alphabetApp.updateProgress();
                 document.getElementById('totalScore').textContent = window.alphabetApp.score;
             }
+            
+            // Add stagger animation to alphabet cards
+            const cards = document.querySelectorAll('.card-alphabet');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.05}s`;
+            });
+            
+            // Smooth progress bar animation
+            setTimeout(() => {
+                const progress = document.getElementById('progress');
+                if (progress) {
+                    progress.style.width = progress.getAttribute('data-progress') || '0%';
+                }
+            }, 1000);
         });
         
-        // Add hover effects for cards
+        // Enhanced card interactions
         document.querySelectorAll('.card-alphabet').forEach(card => {
             card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px) scale(1.02)';
+                this.style.transform = 'translateY(-15px) scale(1.05)';
+                this.style.zIndex = '10';
             });
             
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0) scale(1)';
+                this.style.zIndex = '1';
+            });
+            
+            // Add ripple effect on click
+            card.addEventListener('click', function(e) {
+                const ripple = document.createElement('div');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255,255,255,0.5);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
             });
         });
+        
+        // Add ripple animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Enhanced welcome message
+        if (window.alphabetApp && window.alphabetApp.soundEnabled) {
+            setTimeout(() => {
+                window.alphabetApp.speak('Selamat datang di ABC Fun Learning! Ayo mulai belajar!');
+            }, 2000);
+        }
     </script>
 </body>
 </html>
